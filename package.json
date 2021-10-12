@@ -1,0 +1,27 @@
+{
+  "name": "remoteturtle",
+  "version": "1.0.0",
+  "description": "First of all, install all node dependences with the command",
+  "main": "server.js",
+  "dependencies": {
+    "ws": "^8.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gigante762/remoteTurtle.git"
+  },
+  "keywords": [
+    "turtle"
+  ],
+  "author": "Kevin Rodrigues",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gigante762/remoteTurtle/issues"
+  },
+  "homepage": "https://github.com/gigante762/remoteTurtle#readme"
+}
