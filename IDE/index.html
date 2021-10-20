@@ -9,38 +9,36 @@
   
   <!-- Here below you change the language -->
   <script src="msg/en.js"></script>
-  
-  <style>
-    body {
-      background-color: rgb(24, 23, 23);
-      font-family: sans-serif;
-      color:white
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-  </style>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Highlight -->
+  <link rel="stylesheet" href="highlight/styles/androidstudio.min.css">
+  <script src="highlight/highlight.min.js"></script>
+
+  <script>hljs.highlightAll();</script>
+
 
 </head>
 <body>
   <h1>Lua blockly</h1>
 
   <p>
-    <!-- <button onclick="showCodeLua()">Show Lua</button> -->
     <button onclick="generateLuaCode()">Generate Lua Code</button>
     <!-- <button onclick="runCode()">Run JavaScript</button> -->
   </p>
 
+<section class='sectionMain'>
   <!-- Div onde será injetado o blockly editor  -->
-  <div id="blocklyDiv" style="height: 480px; width: 100%;">
+  <div id="blocklyDiv" style="height: 480px; width: 70%;">
   </div>
 
   <!-- Div onde será injetado o código lua injetado  -->
-  <textarea id="luaCodeText" cols="30" rows="10" style="height: 480px; width: 100%px; border: 1px solid black;">
-  --your code will be here
-  </textarea>
-  
+  <pre>
+    <code class="language-lua" id='luaCodeHi'>
+    </code>
+  </pre>
+</section>
 
   <xml id="toolbox" style="display: none">
     <category name="Logic" colour="#5b80a5">
@@ -436,11 +434,16 @@
       alert(code);
     }
 
+    //event listener
+    demoWorkspace.addChangeListener(generateLuaCode);
+
     function generateLuaCode()
     {
-      let area = document.getElementById('luaCodeText')
+      //let area = document.getElementById('luaCodeText')
+      let luaCodeHi = document.getElementById('luaCodeHi')
       let code = Blockly.Lua.workspaceToCode(demoWorkspace);
-      area.value = '--Auto generated code \n'+code
+      //area.value = '--Auto generated code \n'+code
+      luaCodeHi.innerHTML  = hljs.highlight(code, {language: 'lua'}).value
     }
   </script>
 

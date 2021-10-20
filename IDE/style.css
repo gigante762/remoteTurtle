@@ -1,0 +1,22 @@
+body {
+  background-color: rgb(24, 23, 23);
+  font-family: sans-serif;
+  color:white
+}
+h1 {
+  font-weight: normal;
+  font-size: 140%;
+}
+
+.sectionMain{
+  display:flex
+}
+
+#luaCodeText{
+  background: #131516;
+}
+
+pre{
+  margin-top: -15px;
+  max-width: 30%;
+}
