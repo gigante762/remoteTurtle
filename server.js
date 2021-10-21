@@ -1,6 +1,8 @@
 const WebS = require("ws")
-const wss = new WebS.WebSocketServer({port:8081},()=>{
-    console.log('Server oppened on port 8081');
+const wss = new WebS.WebSocketServer({
+    port:8080
+},()=>{
+    console.log('Server oppened on port 8080');
 })
 
 wss.on("connection",ws =>{
