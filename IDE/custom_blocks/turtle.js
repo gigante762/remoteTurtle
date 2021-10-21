@@ -52,7 +52,7 @@ Blockly.Blocks['turtle_up'] = {
 Blockly.Blocks['turtle_down'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("turtle.up")
+        .appendField("turtle.down")
         .appendField(new Blockly.FieldNumber(1), "steps");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

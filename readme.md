@@ -8,7 +8,7 @@ then run `node server.js`
 Go to your minecraft folder
 
 for exemple
-> Roaming\.minecraft\saves\yourmap\serverconfig\computercraft-server.toml
+> Roaming\\.minecraft\saves\yourmap\serverconfig\computercraft-server.toml
 
 Open with some text editor
 

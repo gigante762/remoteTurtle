@@ -11,6 +11,7 @@ wss.on("connection",ws =>{
     ws.on('message', function incoming(buffer) {
         let msg =  buffer.toString();
         console.log(`Received\n ${msg}`);
+        
         wss.broadcast(msg)
     });
 });

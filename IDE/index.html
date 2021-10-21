@@ -1,45 +1,57 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <title>Lua blockly</title>
-  <script src="blockly_compressed.js"></script>
-  <script src="blocks_compressed.js"></script>
-  <script src="lua_compressed.js"></script>
+  <script src="blockly_core/blockly_compressed.js"></script>
+  <script src="blockly_core/blocks_compressed.js"></script>
+  <script src="blockly_core/lua_compressed.js"></script>
 
   <!-- Here below you change the language -->
   <script src="msg/en.js"></script>
 
+  <!-- Style css -->
   <link rel="stylesheet" href="style.css">
 
   <!-- Highlight -->
   <link rel="stylesheet" href="highlight/styles/androidstudio.min.css">
   <script src="highlight/highlight.min.js"></script>
-
   <script>hljs.highlightAll();</script>
 
   <!-- my blocks -->
   <script src="./custom_blocks/turtle.js"></script>
-
-
 </head>
 
 <body>
-  <h1>Lua blockly</h1>
+  <h1>CC:TWEAKED IDE</h1>
 
-  <p>
-    <button onclick="generateLuaCode()">Generate Lua Code</button>
-    <button id='sendBtn' onclick="sendCode()">Send and Run Code</button>
-  </p>
 
+  <div class='menu'>
+      <button id='sendBtn' onclick="sendCode()">Send and Run Code</button>
+      <button id="toggleLuaCode">Toggle lua code</button>
+
+      <div class = 'flex-col'>
+        <label for="computersids">ID do computador</label>
+        <select name="computersids" id="computersids">
+          <option value="none" selected>none</option>
+        </select>
+      </div>
+
+      <div class='flex-row' style='margin:0px 20px'>
+        <label for="filename">Nome do arquivo: </label>
+        <input type="text" id='filename'>
+      </div>
+
+     
+  </div>
+  
   <section class='sectionMain'>
     <!-- Div onde será injetado o blockly editor  -->
-    <div id="blocklyDiv" style="height: 480px; width: 70%;">
+    <div id="blocklyDiv" style="height: 480px; width: 100%;">
     </div>
 
     <!-- Div onde será injetado o código lua injetado  -->
-    <pre>
+    <pre style='display:none;'>
     <code class="language-lua" id='luaCodeHi'>
     </code>
   </pre>
@@ -457,36 +469,38 @@
     // código já escrito
     //Blockly.Xml.domToWorkspace(document.getElementById('workspaceBlocks'), demoWorkspace);
 
-    function showCodeLua() {
-      // Generate Lua code and display it.
-      var code = Blockly.Lua.workspaceToCode(demoWorkspace);
-      alert(code);
-    }
-
-    //event listener
-    demoWorkspace.addChangeListener(generateLuaCode);
-
-    function generateLuaCode() {
-      //let area = document.getElementById('luaCodeText')
-      let luaCodeHi = document.getElementById('luaCodeHi')
-      let code = Blockly.Lua.workspaceToCode(demoWorkspace);
-      //area.value = '--Auto generated code \n'+code
-      luaCodeHi.innerHTML = hljs.highlight(code, { language: 'lua' }).value
-    }
+    
   </script>
 
   <script>
-    const ws = new WebSocket("ws://192.168.0.30:8081")
-
-    function sendCode() {
-      let code = Blockly.Lua.workspaceToCode(demoWorkspace)
-      ws.send(code)
-    }
+    const ws = new WebSocket("ws://127.0.01:8080")
 
     ws.addEventListener("message", msg => {
-      console.log('received: %s', msg.data)
+      let text = msg.data.toString()
+      console.log(text);
+      let jsonData = JSON.parse(text)
+      
+      if (jsonData.method == 'computerConnected' && jsonData.computer != null)
+      {
+        console.log('addComputerIDIntoSelect', jsonData.computer);
+        addComputerIDIntoSelect(jsonData.computer)
+        if( parseInt(jsonData.fuel) < 100)
+        {
+          alert('Low fuel for turtle '+ jsonData.computer)
+        }
+      }
+      else
+      {
+        console.log('other', jsonData);
+      }
+
     })
+
   </script>
+
+  <!-- carrega scripts para gerar eventlistner para o dom -->
+  <script src="scripts/eventslisner.js"></script>
+  <script src="scripts/functions.js"></script>
 </body>
 
 </html>
