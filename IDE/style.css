@@ -20,3 +20,16 @@ pre{
   margin-top: -15px;
   max-width: 30%;
 }
+
+#sendBtn{
+  background: #2fbb2f;
+    font-weight: bold;
+    padding: 7px;
+    border-radius: 8%;
+    border: 1px solid #5ac95a;
+    color: white;
+    opacity: .9;
+}
+#sendBtn:hover{
+  opacity: 1;
+}

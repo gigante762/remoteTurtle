@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Lua blockly</title>
   <script src="blockly_compressed.js"></script>
   <script src="blocks_compressed.js"></script>
   <script src="lua_compressed.js"></script>
-  
+
   <!-- Here below you change the language -->
   <script src="msg/en.js"></script>
 
@@ -18,27 +19,31 @@
 
   <script>hljs.highlightAll();</script>
 
+  <!-- my blocks -->
+  <script src="./custom_blocks/turtle.js"></script>
+
 
 </head>
+
 <body>
   <h1>Lua blockly</h1>
 
   <p>
     <button onclick="generateLuaCode()">Generate Lua Code</button>
-    <!-- <button onclick="runCode()">Run JavaScript</button> -->
+    <button id='sendBtn' onclick="sendCode()">Send and Run Code</button>
   </p>
 
-<section class='sectionMain'>
-  <!-- Div onde será injetado o blockly editor  -->
-  <div id="blocklyDiv" style="height: 480px; width: 70%;">
-  </div>
+  <section class='sectionMain'>
+    <!-- Div onde será injetado o blockly editor  -->
+    <div id="blocklyDiv" style="height: 480px; width: 70%;">
+    </div>
 
-  <!-- Div onde será injetado o código lua injetado  -->
-  <pre>
+    <!-- Div onde será injetado o código lua injetado  -->
+    <pre>
     <code class="language-lua" id='luaCodeHi'>
     </code>
   </pre>
-</section>
+  </section>
 
   <xml id="toolbox" style="display: none">
     <category name="Logic" colour="#5b80a5">
@@ -395,6 +400,28 @@
       </block>
     </category>
     <sep></sep>
+
+    <category name="Turtle" colour="#6da55b">
+      <block type='turtle_forward'></block>
+      <block type='turtle_back'></block>
+      <block type='turtle_up'></block>
+      <block type='turtle_down'></block>
+      <block type='turtle_turnleft'></block>
+      <block type='turtle_turnright'></block>
+      <block type='turtle_digup'></block>
+      <block type='turtle_dig'></block>
+      <block type='turtle_digdown'></block>
+      <block type='turtle_place'></block>
+      <block type='turtle_placeup'></block>
+      <block type='turtle_placedown'></block>
+      <block type='turtle_drop'></block>
+      <block type='turtle_dropup'></block>
+      <block type='turtle_dropdown'></block>
+      <block type='turtle_select'></block>
+      <block type='turtle_getitemcount'></block>
+    </category>
+
+    <sep></sep>
     <category name="Variables" colour="#a55b80" custom="VARIABLE"></category>
     <category name="Functions" colour="#995ba5" custom="PROCEDURE"></category>
   </xml>
@@ -405,23 +432,25 @@
 
   <script>
     /* Esse linha abaixo injeta o editor de blocos na div blocklyDiv, usando a toolbox na div id 'toolbox' */
-  let demoWorkspace = Blockly.inject('blocklyDiv',
+    let demoWorkspace = Blockly.inject('blocklyDiv',
       {
         media: 'media/',
         toolbox: document.getElementById('toolbox'),
         trashcan: true,
-        scrollbars : true,
-        theme:'dark',
+        scrollbars: true,
+        theme: 'dark',
         renderer: 'thrasos',
-        comments:	true,
+        comments: true,
         zoom:
-         {controls: true,
+        {
+          controls: true,
           wheel: false,
           startScale: 1.0,
           maxScale: 3,
           minScale: 0.3,
           scaleSpeed: 1.2,
-          pinch: true},
+          pinch: true
+        },
       });
 
     //Essa linha abaixo pega um código em xml e injeta no edito de blocos para iniciar o editor com algum
@@ -437,15 +466,27 @@
     //event listener
     demoWorkspace.addChangeListener(generateLuaCode);
 
-    function generateLuaCode()
-    {
+    function generateLuaCode() {
       //let area = document.getElementById('luaCodeText')
       let luaCodeHi = document.getElementById('luaCodeHi')
       let code = Blockly.Lua.workspaceToCode(demoWorkspace);
       //area.value = '--Auto generated code \n'+code
-      luaCodeHi.innerHTML  = hljs.highlight(code, {language: 'lua'}).value
+      luaCodeHi.innerHTML = hljs.highlight(code, { language: 'lua' }).value
     }
   </script>
 
+  <script>
+    const ws = new WebSocket("ws://192.168.0.30:8081")
+
+    function sendCode() {
+      let code = Blockly.Lua.workspaceToCode(demoWorkspace)
+      ws.send(code)
+    }
+
+    ws.addEventListener("message", msg => {
+      console.log('received: %s', msg.data)
+    })
+  </script>
 </body>
+
 </html>
