@@ -52,3 +52,22 @@ pre{
   display:flex;
   flex-direction: column;
 }
+
+#filesystem{
+  margin:10px;
+  padding:10px;
+}
+
+
+.divFileSystem li{
+  text-decoration: none;
+  cursor: pointer;
+}
+.divFileSystem li:hover{
+  border-bottom: 1px solid blue;
+  color:blue;
+}
+
+.divFileSystem {
+  background-color: #252c30;;
+}

@@ -46,15 +46,28 @@
   </div>
   
   <section class='sectionMain'>
+    <!-- Div onde estarão os filesystem -->
+
+    <div class='divFileSystem' >
+      <p>Arquivos</p>
+      <ul id= 'filesystem'>
+        <li>tes1.lua</li>
+        <li>tes2.lua</li>
+        <li>tes3.lua</li>
+        <li>tes4.lua</li>
+        <li>tes5.lua</li>
+      </ul>
+    </div>
+    
     <!-- Div onde será injetado o blockly editor  -->
     <div id="blocklyDiv" style="height: 480px; width: 100%;">
     </div>
 
     <!-- Div onde será injetado o código lua injetado  -->
     <pre style='display:none;'>
-    <code class="language-lua" id='luaCodeHi'>
-    </code>
-  </pre>
+      <code class="language-lua" id='luaCodeHi'>
+      </code>
+    </pre>
   </section>
 
   <xml id="toolbox" style="display: none">
@@ -438,9 +451,9 @@
     <category name="Functions" colour="#995ba5" custom="PROCEDURE"></category>
   </xml>
 
-  <!-- esse é um workspace para  
+  <!--  esse é um workspace para carregar temporariamente os códigos lidos   -->
   <xml xmlns="" id="workspaceBlocks" style="display: none">
-  </xml> -->
+  </xml>
 
   <script>
     /* Esse linha abaixo injeta o editor de blocos na div blocklyDiv, usando a toolbox na div id 'toolbox' */
@@ -488,6 +501,16 @@
         {
           alert('Low fuel for turtle '+ jsonData.computer)
         }
+      }
+      else if (jsonData.method == 'computerGetFiles' && jsonData.computer != null)
+      {
+        generateListAquivos(jsonData.files)
+      }
+      else if (jsonData.method == 'computerGetXmlFromFile' && jsonData.computer != null)
+      {
+        console.log('xml', jsonData.xml);
+        generateCodeFromXml(jsonData.xml)
+        
       }
       else
       {

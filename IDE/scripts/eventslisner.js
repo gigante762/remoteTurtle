@@ -29,4 +29,19 @@ toggleLuaCode.addEventListener('click',()=>{
 
 
 
+let computersids = document.getElementById('computersids')
+
+computersids.addEventListener('change',()=>{
+    console.log('select changed', computersids.value);
+
+    if( computersids.value == 'none')
+    {
+        return
+    }
+
+   sendGetFiles(computersids.value)
+})
+
+
+
 

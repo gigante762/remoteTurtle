@@ -13,7 +13,6 @@ if ws then
 
     while true do
         local msg = ws.receive()
-
         local data = textutils.unserializeJSON(msg)
 
         --just do the action if the message is for you
@@ -31,6 +30,30 @@ if ws then
                 fileX.close()
 
                 shell.run('codes/'..data.filename)
+            end
+        
+        elseif data.method == 'getfiles' then
+            
+            if(data.computer == myId) then
+                local dados = {}
+                dados.files = fs.list('codes')
+                dados.computer = myId
+                dados.method = 'computerGetFiles'
+
+                ws.send(textutils.serialiseJSON(dados))
+            end
+            
+        elseif data.method == 'getXmlFromFile' then
+            
+            if(data.computer == myId) then
+                local dados = {}
+                local xml = fs.open('codes/'..data.file,'r')
+
+                dados.xml = xml.readAll()
+                dados.computer = myId
+                dados.method = 'computerGetXmlFromFile'
+
+                ws.send(textutils.serialiseJSON(dados))
             end
         end
         

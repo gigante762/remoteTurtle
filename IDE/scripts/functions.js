@@ -30,4 +30,65 @@ function sendCode() {
     xml:xml,
     filename: filename.value
   }))
+
+}
+
+function sendGetFiles(computerID) {
+
+  ws.send(JSON.stringify({
+    //send the computer label
+    method: 'getfiles',
+    computer: computerID
+  }))
+
+}
+
+function sendGetXmlFromfile(computerID,file) {
+
+  ws.send(JSON.stringify({
+    //send the computer label
+    method: 'getXmlFromFile',
+    computer: computerID,
+    file:file
+  }))
+
+}
+
+function generateListAquivos(arrayFiles)
+{
+  let filesystem = document.getElementById('filesystem')
+
+  filesystem.innerHTML = ''
+
+  for(let file of arrayFiles)
+  {
+    let li = document.createElement('li')
+    li.innerText = file
+
+    filesystem.appendChild(li)
+  }
+
+  let filesystemLis = document.querySelectorAll('#filesystem li')
+  let computersids = document.getElementById('computersids')
+
+  Array.from(filesystemLis).forEach((e)=>{
+      e.addEventListener('click',()=>{
+          console.log(e.innerText);
+          sendGetXmlFromfile(computersids.value,e.innerText)
+          document.getElementById('filename').value = e.innerText.split('.')[0]
+      })
+  })
+}
+
+
+function generateCodeFromXml(xml)
+{
+  xml = xml.replace('<xml>')
+  xml = xml.replace('</xml>')
+  let domXml = document.createElement('xml')
+  domXml.innerHTML = xml
+  //document.getElementById('workspaceBlocks').innerHTML = xml
+  Blockly.Xml.domToWorkspace(domXml, demoWorkspace);
+  //Blockly.Xml.domToWorkspace(xml, demoWorkspace);
+
 }
