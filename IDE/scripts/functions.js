@@ -56,29 +56,68 @@ function sendGetXmlFromfile(computerID,file) {
 
 function generateListAquivos(arrayFiles)
 {
+
+  if (!arrayFiles.length)
+  {
+    arrayFiles = []
+  }
+  
   let filesystem = document.getElementById('filesystem')
 
   filesystem.innerHTML = ''
+
+  // foo.lua , foo.xml => foo
   files = arrayFiles.filter((f)=>f.split('.')[1]=='xml')
   files = files.map((f)=>f.split('.')[0])
 
 
   for(let file of files)
   {
+
+    let div = document.createElement('div')
+    div.classList.add('div-file', 'flex-row')
+    
     let li = document.createElement('li')
+    li.setAttribute('file',file)
+    li.setAttribute('onclick',`onclickGetXmlFromFile(this,'${file}')`)
     li.innerText = file
+    
+    let span = document.createElement('span')
+    span.setAttribute('file',file)
+    span.setAttribute('onclick',`onclickDeleteFile(this,'${file}')`)
+    span.innerText = 'x'
 
-    filesystem.appendChild(li)
+    div.appendChild(li)
+    div.appendChild(span)
+
+    filesystem.appendChild(div)
   }
+}
 
+function onclickGetXmlFromFile(el,fileName)
+{
+  unSelectAllFiles()
+  el.classList.add('fileSelected')
+  sendGetXmlFromfile(computersids.value, fileName)
+  document.getElementById('filename').value = fileName
+}
+
+function onclickDeleteFile(el,fileName)
+{
+  let res = confirm('Delete the file '+fileName+' ?')
+
+  if(res)
+  {
+    el.parentNode = null
+    sendDeleteFile(computersids.value, fileName)
+  }
+}
+
+function unSelectAllFiles()
+{
   let filesystemLis = document.querySelectorAll('#filesystem li')
-  let computersids = document.getElementById('computersids')
-
   Array.from(filesystemLis).forEach((e)=>{
-      e.addEventListener('click',()=>{
-          sendGetXmlFromfile(computersids.value,e.innerText)
-          document.getElementById('filename').value = e.innerText.split('.')[0]
-      })
+    e.classList.remove('fileSelected')
   })
 }
 
@@ -89,7 +128,7 @@ function generateCodeFromXml(xml)
   let domXml = document.createElement('xml')
   domXml.innerHTML = xml
   //document.getElementById('workspaceBlocks').innerHTML = xml
-  Blockly.Xml.domToWorkspace(domXml, demoWorkspace);
+  Blockly.Xml.clearWorkspaceAndLoadFromXml(domXml, demoWorkspace);
   //Blockly.Xml.domToWorkspace(xml, demoWorkspace);
 
 }
@@ -108,5 +147,15 @@ function sendComputersPing() {
     //send the computer label
     method: 'getComputersPong',
     computer: 'all'
+  }))
+}
+
+function sendDeleteFile(computerID, file)
+{
+  ws.send(JSON.stringify({
+    //send the computer label
+    method: 'deleteFile',
+    computer: computerID,
+    file:file
   }))
 }

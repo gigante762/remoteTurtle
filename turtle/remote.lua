@@ -16,6 +16,7 @@ routesMap['getComputersPong'] = 'sendComputerConnected'
 routesMap['sendCode'] = 'receiveCode'
 routesMap['getfiles'] = 'sendFiles'
 routesMap['getXmlFromFile'] = 'sendXmlFromFile'
+routesMap['deleteFile'] = 'receiveDeleteFile'
 
 local myId = os.getComputerID()..'#'..os.getComputerLabel()
 
@@ -63,6 +64,13 @@ controllers.sendXmlFromFile = function(data)
     ws.send(textutils.serialiseJSON(dados))
 end
 
+controllers.receiveDeleteFile = function(data)
+    shell.run('rm codes/'..data.file..'.*')
+    
+    --envia os arquivos atualizados
+    controllers.sendFiles()
+end
+
 local function route(data)
     if(data.computer == myId or data.computer == 'all') then
         local controllerF = routesMap[data.method]
@@ -79,9 +87,14 @@ if ws then
 
     while true do
         local msg = ws.receive()
-        local data = textutils.unserializeJSON(msg)
-
-        route(data)
+        local success, result =  pcall(function()
+            return    textutils.unserializeJSON(msg)
+        end)
+        if success then
+            route(result)
+        else
+            printError(result)
+        end
     end
 else
     printError(err)

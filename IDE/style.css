@@ -55,16 +55,16 @@ pre{
 #filesystem{
   margin:10px;
   padding:10px;
+  list-style: none;
 }
 
 
-.divFileSystem li{
+.divFileSystem{
   text-decoration: none;
   cursor: pointer;
 }
 .divFileSystem li:hover{
-  border-bottom: 1px solid blue;
-  color:blue;
+  color: #cddc39;
 }
 
 .divFileSystem {
@@ -101,4 +101,22 @@ pre{
   background: #00000040;
   padding: 10px;
   border-radius: 8%;
+}
+
+
+.div-file span{
+  padding: 0 5px;
+  background: #ff00008a;
+  border: 1px solid #ff000000;
+  border-radius: 8%;
+  margin: 0 3px;
+}
+
+.div-file span:hover{
+  background: #ff0000;
+  border-color: #ff0000;
+}
+
+.fileSelected{
+  color: #cddc39;
 }
