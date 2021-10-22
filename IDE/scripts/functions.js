@@ -73,13 +73,11 @@ function generateListAquivos(arrayFiles)
 
   Array.from(filesystemLis).forEach((e)=>{
       e.addEventListener('click',()=>{
-          console.log(e.innerText);
           sendGetXmlFromfile(computersids.value,e.innerText)
           document.getElementById('filename').value = e.innerText.split('.')[0]
       })
   })
 }
-
 
 function generateCodeFromXml(xml)
 {
@@ -91,4 +89,12 @@ function generateCodeFromXml(xml)
   Blockly.Xml.domToWorkspace(domXml, demoWorkspace);
   //Blockly.Xml.domToWorkspace(xml, demoWorkspace);
 
+}
+
+function generateLuaCode() {
+  //let area = document.getElementById('luaCodeText')
+  let luaCodeHi = document.getElementById('luaCodeHi')
+  let code = Blockly.Lua.workspaceToCode(demoWorkspace);
+  //area.value = '--Auto generated code \n'+code
+  luaCodeHi.innerHTML = hljs.highlight(code, { language: 'lua' }).value
 }

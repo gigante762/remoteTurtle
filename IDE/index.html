@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Lua blockly</title>
@@ -23,42 +24,39 @@
 </head>
 
 <body>
-  <h1>CC:TWEAKED IDE</h1>
+  <button id="toggleLuaCode">Toggle lua code</button>
+  <div class='menu flex-row jus-space-ar ali-center'>
 
+    <div class= 'title'>
+      <h1>CC:TWEAKED IDE</h1>
+    </div>
 
-  <div class='menu'>
-      <button id='sendBtn' onclick="sendCode()">Send and Run Code</button>
-      <button id="toggleLuaCode">Toggle lua code</button>
+    <div class='flex-col jus-center ali-center'>
+      <label for="computersids">ID do computador</label>
+      <select name="computersids" id="computersids">
+        <option value="none" selected>none</option>
+      </select>
+    </div>
 
-      <div class = 'flex-col'>
-        <label for="computersids">ID do computador</label>
-        <select name="computersids" id="computersids">
-          <option value="none" selected>none</option>
-        </select>
-      </div>
+    <div class='flex-row jus-center ali-center'>
+      <label for="filename">Nome do arquivo: </label>
+      <input type="text" id='filename' autocomplete="off">
+    </div>
 
-      <div class='flex-row' style='margin:0px 20px'>
-        <label for="filename">Nome do arquivo: </label>
-        <input type="text" id='filename'>
-      </div>
-
-     
+    <button id='sendBtn' onclick="sendCode()">Send and Run Code</button>
   </div>
-  
-  <section class='sectionMain'>
-    <!-- Div onde estarão os filesystem -->
 
-    <div class='divFileSystem' >
+
+  <section class='sectionMain'>
+
+    <!-- Div onde estarão os filesystem -->
+    <div class='divFileSystem'>
       <p>Arquivos</p>
-      <ul id= 'filesystem'>
-        <li>tes1.lua</li>
-        <li>tes2.lua</li>
-        <li>tes3.lua</li>
-        <li>tes4.lua</li>
-        <li>tes5.lua</li>
+      <ul id='filesystem'>
+       ...
       </ul>
     </div>
-    
+
     <!-- Div onde será injetado o blockly editor  -->
     <div id="blocklyDiv" style="height: 480px; width: 100%;">
     </div>
@@ -68,8 +66,10 @@
       <code class="language-lua" id='luaCodeHi'>
       </code>
     </pre>
+
   </section>
 
+  <!-- toolbox -->
   <xml id="toolbox" style="display: none">
     <category name="Logic" colour="#5b80a5">
       <block type="controls_if"></block>
@@ -451,79 +451,14 @@
     <category name="Functions" colour="#995ba5" custom="PROCEDURE"></category>
   </xml>
 
-  <!--  esse é um workspace para carregar temporariamente os códigos lidos   -->
-  <xml xmlns="" id="workspaceBlocks" style="display: none">
-  </xml>
-
-  <script>
-    /* Esse linha abaixo injeta o editor de blocos na div blocklyDiv, usando a toolbox na div id 'toolbox' */
-    let demoWorkspace = Blockly.inject('blocklyDiv',
-      {
-        media: 'media/',
-        toolbox: document.getElementById('toolbox'),
-        trashcan: true,
-        scrollbars: true,
-        theme: 'dark',
-        renderer: 'thrasos',
-        comments: true,
-        zoom:
-        {
-          controls: true,
-          wheel: false,
-          startScale: 1.0,
-          maxScale: 3,
-          minScale: 0.3,
-          scaleSpeed: 1.2,
-          pinch: true
-        },
-      });
-
-    //Essa linha abaixo pega um código em xml e injeta no edito de blocos para iniciar o editor com algum
-    // código já escrito
-    //Blockly.Xml.domToWorkspace(document.getElementById('workspaceBlocks'), demoWorkspace);
-
-    
-  </script>
-
-  <script>
-    const ws = new WebSocket("ws://127.0.01:8080")
-
-    ws.addEventListener("message", msg => {
-      let text = msg.data.toString()
-      console.log(text);
-      let jsonData = JSON.parse(text)
-      
-      if (jsonData.method == 'computerConnected' && jsonData.computer != null)
-      {
-        console.log('addComputerIDIntoSelect', jsonData.computer);
-        addComputerIDIntoSelect(jsonData.computer)
-        if( parseInt(jsonData.fuel) < 100)
-        {
-          alert('Low fuel for turtle '+ jsonData.computer)
-        }
-      }
-      else if (jsonData.method == 'computerGetFiles' && jsonData.computer != null)
-      {
-        generateListAquivos(jsonData.files)
-      }
-      else if (jsonData.method == 'computerGetXmlFromFile' && jsonData.computer != null)
-      {
-        console.log('xml', jsonData.xml);
-        generateCodeFromXml(jsonData.xml)
-        
-      }
-      else
-      {
-        console.log('other', jsonData);
-      }
-
-    })
-
-  </script>
+  <!-- Create workspace -->
+  <script src="scripts/createWorkspace.js"></script>
+  <!-- Open websocket -->
+  <script src="scripts/websocket.js"></script>
 
   <!-- carrega scripts para gerar eventlistner para o dom -->
-  <script src="scripts/eventslisner.js"></script>
   <script src="scripts/functions.js"></script>
+  <script src="scripts/eventslisner.js"></script>
 </body>
 
 </html>
