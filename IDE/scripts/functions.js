@@ -101,3 +101,12 @@ function generateLuaCode() {
   //area.value = '--Auto generated code \n'+code
   luaCodeHi.innerHTML = hljs.highlight(code, { language: 'lua' }).value
 }
+
+function sendComputersPing() {
+
+  ws.send(JSON.stringify({
+    //send the computer label
+    method: 'getComputersPong',
+    computer: 'all'
+  }))
+}

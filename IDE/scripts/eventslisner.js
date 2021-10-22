@@ -23,11 +23,17 @@ computersids.addEventListener('change',()=>{
 
     if( computersids.value == 'none')
     {
-        return
+        let filesystem = document.getElementById('filesystem')
+        filesystem.innerHTML = ''
     }
 
    sendGetFiles(computersids.value)
 })
+
+
+// wait 2 seconds and get computers connecteds
+//getComputersPong
+setTimeout(sendComputersPing,2000)
 
 
 

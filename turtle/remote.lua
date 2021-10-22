@@ -1,4 +1,10 @@
 ---@diagnostic disable: undefined-field, undefined-global
+
+--gambi
+if not fs.exists('codes') then
+    fs.makeDir('codes')
+end
+
 local link = '127.0.0.1:8080'
 
 local ws,err = http.websocket("ws://"..link)
@@ -6,13 +12,14 @@ local ws,err = http.websocket("ws://"..link)
 local controllers = {}
 
 local routesMap = {}
+routesMap['getComputersPong'] = 'sendComputerConnected'
 routesMap['sendCode'] = 'receiveCode'
 routesMap['getfiles'] = 'sendFiles'
 routesMap['getXmlFromFile'] = 'sendXmlFromFile'
 
 local myId = os.getComputerID()..'#'..os.getComputerLabel()
 
-local function sendComputerConnected()
+controllers.sendComputerConnected = function()
     local data = {}
     data.method = 'computerConnected'
     data.computer = myId
@@ -57,7 +64,7 @@ controllers.sendXmlFromFile = function(data)
 end
 
 local function route(data)
-    if(data.computer == myId) then
+    if(data.computer == myId or data.computer == 'all') then
         local controllerF = routesMap[data.method]
         if (controllers[controllerF]) then
             controllers[controllerF](data)
@@ -68,7 +75,7 @@ end
 
 if ws then
     -- send the computer ID with it label when connect
-    sendComputerConnected()
+    controllers.sendComputerConnected()
 
     while true do
         local msg = ws.receive()
