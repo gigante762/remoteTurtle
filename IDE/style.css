@@ -60,6 +60,7 @@ pre{
 
 
 .divFileSystem{
+  width: 200px;
   text-decoration: none;
   cursor: pointer;
 }
