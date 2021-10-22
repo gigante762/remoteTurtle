@@ -16,7 +16,7 @@ Blockly.Lua['turtle_forward'] = function(block) {
   // TODO: Assemble Lua into code variable.
   let rand = Math.random().toString(36).substr(2, 5);
   var code = `
-  for ${rand} = 1,${number_steps} do
+  for i${rand} = 1,${number_steps} do
     turtle.forward()
   end\n`;
   return code;
@@ -226,7 +226,7 @@ Blockly.Lua['turtle_back'] = function(block) {
   // TODO: Assemble Lua into code variable.
   let rand = Math.random().toString(36).substr(2, 5);
   var code = `
-  for ${rand} = 1,${number_steps} do
+  for i${rand} = 1,${number_steps} do
     turtle.back()
   end\n`;
   return code;
@@ -237,7 +237,7 @@ Blockly.Lua['turtle_up'] = function(block) {
   // TODO: Assemble Lua into code variable.
   let rand = Math.random().toString(36).substr(2, 5);
   var code = `
-  for ${rand} = 1,${number_steps} do
+  for i${rand} = 1,${number_steps} do
     turtle.up()
   end\n`;
   return code;
@@ -248,7 +248,7 @@ Blockly.Lua['turtle_down'] = function(block) {
   // TODO: Assemble Lua into code variable.
   let rand = Math.random().toString(36).substr(2, 5);
   var code = `
-  for ${rand} = 1,${number_steps} do
+  for i${rand} = 1,${number_steps} do
     turtle.down()
   end\n`;
   return code;
@@ -259,7 +259,7 @@ Blockly.Lua['turtle_turnleft'] = function(block) {
   // TODO: Assemble Lua into code variable.
   let rand = Math.random().toString(36).substr(2, 5);
   var code = `
-  for ${rand} = 1,${number_steps} do
+  for i${rand} = 1,${number_steps} do
     turtle.turnLeft()
   end\n`;
   return code;
@@ -270,7 +270,7 @@ Blockly.Lua['turtle_turnright'] = function(block) {
   // TODO: Assemble Lua into code variable.
   let rand = Math.random().toString(36).substr(2, 5);
   var code = `
-  for ${rand} = 1,${number_steps} do
+  for i${rand} = 1,${number_steps} do
     turtle.turnRight()
   end\n`;
   return code;

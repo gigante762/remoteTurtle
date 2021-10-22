@@ -24,7 +24,7 @@ function sendCode() {
 
   ws.send(JSON.stringify({
     //send the computer label
-    method: 'func',
+    method: 'sendCode',
     computer: computersids.value,
     code,
     xml:xml,
@@ -49,7 +49,7 @@ function sendGetXmlFromfile(computerID,file) {
     //send the computer label
     method: 'getXmlFromFile',
     computer: computerID,
-    file:file
+    file:file+'.xml'
   }))
 
 }
@@ -59,8 +59,11 @@ function generateListAquivos(arrayFiles)
   let filesystem = document.getElementById('filesystem')
 
   filesystem.innerHTML = ''
+  files = arrayFiles.filter((f)=>f.split('.')[1]=='xml')
+  files = files.map((f)=>f.split('.')[0])
 
-  for(let file of arrayFiles)
+
+  for(let file of files)
   {
     let li = document.createElement('li')
     li.innerText = file
