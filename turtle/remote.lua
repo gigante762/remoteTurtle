@@ -20,55 +20,58 @@ routesMap['deleteFile'] = 'receiveDeleteFile'
 
 local myId = os.getComputerID()..'#'..os.getComputerLabel()
 
-controllers.sendComputerConnected = function()
+controllers.sendComputerConnected = function(request)
     local data = {}
+    data.IDEid = request.IDEid
     data.method = 'computerConnected'
     data.computer = myId
     data.fuel = turtle.getFuelLevel()
     ws.send(textutils.serialiseJSON(data))
 end
 
-controllers.sendFiles = function()
-    local dados = {}
-    dados.files = fs.list('codes')
-    dados.computer = myId
-    dados.method = 'computerGetFiles'
+controllers.sendFiles = function(request)
+    local data = {}
+    data.files = fs.list('codes')
+    data.IDEid = request.IDEid
+    data.computer = myId
+    data.method = 'computerGetFiles'
 
-    ws.send(textutils.serialiseJSON(dados))
+    ws.send(textutils.serialiseJSON(data))
 end
 
-controllers.receiveCode = function(data)
+controllers.receiveCode = function(request)
     --cria um novo arquivo e roda o programa
-    local fileC = fs.open('codes/'..data.filename..'.lua','w')
-    local fileX = fs.open('codes/'..data.filename..'.xml','w')
+    local fileC = fs.open('codes/'..request.filename..'.lua','w')
+    local fileX = fs.open('codes/'..request.filename..'.xml','w')
 
-    fileC.write(data.code)
-    fileX.write(data.xml)
+    fileC.write(request.code)
+    fileX.write(request.xml)
 
     fileC.close()
     fileX.close()
 
     --envia os arquivos atualizados
-    controllers.sendFiles()
+    controllers.sendFiles(request)
 
-    shell.run('codes/'..data.filename)
+    shell.run('codes/'..request.filename)
 end
 
-controllers.sendXmlFromFile = function(data)
-    local dados = {}
-    local xml = fs.open('codes/'..data.file,'r')
-    dados.xml = xml.readAll()
-    dados.computer = myId
-    dados.method = 'computerGetXmlFromFile'
+controllers.sendXmlFromFile = function(request)
+    local data = {}
+    local xml = fs.open('codes/'..request.file,'r')
+    data.xml = xml.readAll()
+    data.computer = myId
+    data.IDEid = request.IDEid
+    data.method = 'computerGetXmlFromFile'
 
-    ws.send(textutils.serialiseJSON(dados))
+    ws.send(textutils.serialiseJSON(data))
 end
 
-controllers.receiveDeleteFile = function(data)
-    shell.run('rm codes/'..data.file..'.*')
+controllers.receiveDeleteFile = function(request)
+    shell.run('rm codes/'..request.file..'.*')
     
     --envia os arquivos atualizados
-    controllers.sendFiles()
+    controllers.sendFiles(request)
 end
 
 local function route(data)
@@ -83,7 +86,7 @@ end
 
 if ws then
     -- send the computer ID with it label when connect
-    controllers.sendComputerConnected()
+    -- controllers.sendComputerConnected()
 
     while true do
         local msg = ws.receive()

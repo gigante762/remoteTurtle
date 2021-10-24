@@ -1,4 +1,5 @@
 const ws = new WebSocket("ws://127.0.01:8080")
+const IDEid = 'id' + Math.random().toString(36).substr(2, 5);
 
 /* Core variables */
 let middlewares = []
@@ -14,8 +15,18 @@ addMiddleware((msg)=>{
     let text = msg.data.toString()
     return jsonData = JSON.parse(text)
 })
+
 addMiddleware((obj)=>{
     if (obj.method.substr(0,8) != 'computer')
+    {
+        return false
+    }
+    return obj
+})
+
+// Separar os canais de transmissão por IDE's
+addMiddleware((obj)=>{
+    if (obj.IDEid != IDEid)
     {
         return false
     }

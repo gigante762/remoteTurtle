@@ -28,7 +28,8 @@ function sendCode() {
     computer: computersids.value,
     code,
     xml:xml,
-    filename: filename.value
+    filename: filename.value,
+    IDEid
   }))
 
 }
@@ -38,7 +39,8 @@ function sendGetFiles(computerID) {
   ws.send(JSON.stringify({
     //send the computer label
     method: 'getfiles',
-    computer: computerID
+    computer: computerID,
+    IDEid
   }))
 
 }
@@ -49,7 +51,8 @@ function sendGetXmlFromfile(computerID,file) {
     //send the computer label
     method: 'getXmlFromFile',
     computer: computerID,
-    file:file+'.xml'
+    file:file+'.xml',
+    IDEid
   }))
 
 }
@@ -146,7 +149,8 @@ function sendComputersPing() {
   ws.send(JSON.stringify({
     //send the computer label
     method: 'getComputersPong',
-    computer: 'all'
+    computer: 'all',
+    IDEid
   }))
 }
 
@@ -156,6 +160,7 @@ function sendDeleteFile(computerID, file)
     //send the computer label
     method: 'deleteFile',
     computer: computerID,
-    file:file
+    file:file,
+    IDEid
   }))
 }
