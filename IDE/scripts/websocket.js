@@ -13,6 +13,7 @@ ws.addEventListener("message", msg => {
 addMiddleware((msg)=>{
     //obj.msg = msg
     let text = msg.data.toString()
+    // console.log(text); // quero ver tudo o que chega de mensagem pra esse cliente
     return jsonData = JSON.parse(text)
 })
 
@@ -62,7 +63,6 @@ function addController(name,func)
 
 function router(msg)
 {
-    
     let obj = msg
     for(let f of middlewares)
     {

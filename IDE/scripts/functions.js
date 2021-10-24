@@ -29,7 +29,8 @@ function sendCode() {
     code,
     xml:xml,
     filename: filename.value,
-    IDEid
+    IDEid,
+    to:computersids.value
   }))
 
 }
@@ -40,7 +41,8 @@ function sendGetFiles(computerID) {
     //send the computer label
     method: 'getfiles',
     computer: computerID,
-    IDEid
+    IDEid,
+    to:computerID
   }))
 
 }
@@ -52,7 +54,8 @@ function sendGetXmlFromfile(computerID,file) {
     method: 'getXmlFromFile',
     computer: computerID,
     file:file+'.xml',
-    IDEid
+    IDEid,
+    to:computerID
   }))
 
 }
@@ -150,7 +153,8 @@ function sendComputersPing() {
     //send the computer label
     method: 'getComputersPong',
     computer: 'all',
-    IDEid
+    IDEid,
+    to:'turtles'
   }))
 }
 
@@ -161,6 +165,21 @@ function sendDeleteFile(computerID, file)
     method: 'deleteFile',
     computer: computerID,
     file:file,
-    IDEid
+    IDEid,
+    to:computerID
   }))
+}
+
+function sendIDEConnected() {
+
+  ws.send(JSON.stringify({
+    //send the computer label
+    method: 'ideConnected',
+    IDEid,
+    to:'server'
+  }));
+
+  // wait 2 seconds and get computers connecteds
+  //getComputersPong
+  setTimeout(sendComputersPing,2000);
 }

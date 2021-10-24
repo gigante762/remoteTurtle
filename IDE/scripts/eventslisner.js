@@ -31,9 +31,11 @@ computersids.addEventListener('change',()=>{
 })
 
 
-// wait 2 seconds and get computers connecteds
-//getComputersPong
-setTimeout(sendComputersPing,2000)
+// send connected and get the computers pong
+//sendIDEConnected()
+setTimeout(sendIDEConnected,1000)
+
+
 
 
 

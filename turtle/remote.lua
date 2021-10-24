@@ -23,6 +23,7 @@ local myId = os.getComputerID()..'#'..os.getComputerLabel()
 controllers.sendComputerConnected = function(request)
     local data = {}
     data.IDEid = request.IDEid
+    data.to = request.IDEid
     data.method = 'computerConnected'
     data.computer = myId
     data.fuel = turtle.getFuelLevel()
@@ -33,6 +34,7 @@ controllers.sendFiles = function(request)
     local data = {}
     data.files = fs.list('codes')
     data.IDEid = request.IDEid
+    data.to = request.IDEid
     data.computer = myId
     data.method = 'computerGetFiles'
 
@@ -61,6 +63,7 @@ controllers.sendXmlFromFile = function(request)
     local xml = fs.open('codes/'..request.file,'r')
     data.xml = xml.readAll()
     data.computer = myId
+    data.to = request.IDEid
     data.IDEid = request.IDEid
     data.method = 'computerGetXmlFromFile'
 
@@ -90,6 +93,7 @@ if ws then
 
     while true do
         local msg = ws.receive()
+        -- print(msg) -- quero ver tudo o que ele recebe
         local success, result =  pcall(function()
             return    textutils.unserializeJSON(msg)
         end)
