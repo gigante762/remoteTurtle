@@ -50,6 +50,12 @@ addController('computerGetXmlFromFile',(obj)=>{
     generateCodeFromXml(obj.xml)
 })
 
+addController('computerFinishCodeExecute',(obj)=>{
+    let sendBtn = document.getElementById('sendBtn')
+    sendBtn.classList.add('green-signal')
+    sendBtn.classList.remove('red-signal')
+})
+
 /* Core functions */
 function addMiddleware(func)
 {

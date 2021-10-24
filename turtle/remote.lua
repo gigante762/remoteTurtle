@@ -9,6 +9,8 @@ local link = '127.0.0.1:8080'
 
 local ws,err = http.websocket("ws://"..link)
 
+local lastIdeSendedCode = ''
+
 local controllers = {}
 
 local routesMap = {}
@@ -19,6 +21,17 @@ routesMap['getXmlFromFile'] = 'sendXmlFromFile'
 routesMap['deleteFile'] = 'receiveDeleteFile'
 
 local myId = os.getComputerID()..'#'..os.getComputerLabel()
+
+local function computerFinishCodeExecute(request)
+    local data = {}
+    data.IDEid = request.IDEid
+    data.to = request.IDEid
+    data.method = 'computerFinishCodeExecute'
+    data.computer = myId
+    data.fuel = turtle.getFuelLevel()
+    ws.send(textutils.serialiseJSON(data))
+end
+
 
 controllers.sendComputerConnected = function(request)
     local data = {}
@@ -56,6 +69,9 @@ controllers.receiveCode = function(request)
     controllers.sendFiles(request)
 
     shell.run('codes/'..request.filename)
+
+    computerFinishCodeExecute(request)
+
 end
 
 controllers.sendXmlFromFile = function(request)
@@ -75,6 +91,7 @@ controllers.receiveDeleteFile = function(request)
     
     --envia os arquivos atualizados
     controllers.sendFiles(request)
+
 end
 
 local function route(data)

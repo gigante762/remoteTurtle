@@ -21,6 +21,9 @@ toggleLuaCode.addEventListener('click',()=>{
 let computersids = document.getElementById('computersids')
 computersids.addEventListener('change',()=>{
 
+    sendBtn.classList.add('green-signal')
+    sendBtn.classList.remove('red-signal')
+
     if( computersids.value == 'none')
     {
         let filesystem = document.getElementById('filesystem')

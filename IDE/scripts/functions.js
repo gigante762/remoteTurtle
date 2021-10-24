@@ -15,11 +15,23 @@ function sendCode() {
   let xml =  '<xml>' + Blockly.Xml.workspaceToDom(demoWorkspace).innerHTML + '</xml>'
   let computersids = document.getElementById('computersids')
   let filename = document.getElementById('filename')
+  let sendBtn = document.getElementById('sendBtn')
+
+  if (!sendBtn.classList.contains('green-signal'))
+  {
+    return
+  }
+  
+  sendBtn.classList.toggle('green-signal')
+  sendBtn.classList.toggle('red-signal')
 
   if (filename.value == '')
   {
+    sendBtn.classList.toggle('green-signal')
+    sendBtn.classList.toggle('red-signal')
     alert('File name can\'t be empty')
     return
+
   }
 
   ws.send(JSON.stringify({

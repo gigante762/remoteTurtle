@@ -22,16 +22,15 @@ pre{
 }
 
 #sendBtn{
-  background: #2fbb2f;
-    font-weight: bold;
-    padding: 7px;
-    border-radius: 8%;
-    border: 1px solid #5ac95a;
-    color: white;
-    opacity: .9;
+  font-weight: bold;
+  padding: 7px;
+  border-radius: 8%;
+  color: white;
+  opacity: .9;
 }
 #sendBtn:hover{
-  opacity: 1;
+  filter: drop-shadow(2px 1px 1px black);
+  animation-duration: .5s;
 }
 
 .menu{
@@ -120,4 +119,15 @@ pre{
 
 .fileSelected{
   color: #cddc39;
+}
+
+.red-signal{
+  background: red;
+  border: 1px solid #c95a5a;
+  cursor: no-drop;
+}
+
+.green-signal{
+  background:green;
+  border: 1px solid #5ac95a;
 }
