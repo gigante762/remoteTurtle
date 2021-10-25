@@ -9,8 +9,6 @@ local link = '127.0.0.1:8080'
 
 local ws,err = http.websocket("ws://"..link)
 
-local lastIdeSendedCode = ''
-
 local controllers = {}
 
 local routesMap = {}
